@@ -1,0 +1,422 @@
+---
+title: "Census Income"
+subtitle: "Adult" 
+author: "Barry Becker"
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::pdf_document2:
+    toc: true
+    toc_depth: 4
+    fig_caption: true
+fontsize: 12pt
+geometry: "left=1cm,right=1cm,top=1.5cm,bottom=1.5cm"
+always_allow_html: yes
+header-includes:
+- \usepackage[section]{placeins}
+- \usepackage{fixltx2e}
+- \usepackage{longtable}
+- \usepackage{pdflscape}
+- \usepackage{graphicx}
+- \usepackage{caption}
+- \usepackage{gensymb}
+- \usepackage{subcaption}
+- \DeclareUnicodeCharacter{2264}{$\pm$}
+- \DeclareUnicodeCharacter{2265}{$\geq$}
+- \usepackage{fancyhdr}
+- \usepackage{lipsum}
+#- \pagestyle{fancy}
+#- \fancyhead{DRAFT}
+---
+
+```{r setup, include = FALSE}
+#library("knitr")
+#knitr::opts_chunk$set(
+#	echo = TRUE,
+#	fig.align = "center",
+#	message = TRUE,
+#	warning = FALSE,
+#	cache = FALSE,
+#	dev = "png",
+#	dpi = 300,
+#	out.height = "90%",
+#	out.width = "90%",
+#	strip.white = TRUE
+#)
+ 
+
+#Add packages
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(gridExtra)
+
+#Set universal them for figures
+theme_set(theme_light())
+
+```
+
+```{r, notes}
+
+#Please know that you can use a html output but you need to keep the sectioning.
+
+#Please Reference your figures and tables so that it is readable
+
+#Each update is important to keep for grading
+```
+
+
+
+
+
+# Update 1
+
+```{r}
+df = read.csv('adult.csv',header=T,na.strings =c("?","NA"))
+```
+
+
+q1. The census income data from UCI: https://archive.ics.uci.edu/ml/datasets/Census+Income.
+
+q2. 1. Predicting whether income exceeds $50k/year based on census data. 
+    2. Which algorithm provides the best results.
+
+q3. The predictors are Age, Work class, Fnlwgt, Education, Education-num, Maritial-status,           Occupation, Relationship, Race, Sex, Capital-gain, Capital-loss, House-per-week,                 Native-country.
+
+q4. The Response is we assume a target parameter and predict them based on all the 
+    predictors.
+    
+q5. Below are the outcomes that I am looking forward to achieve by using this data. 
+    1. Using this data, there is an opportunity to perform all pre-processing steps and try to          implement all the machine learning and deep learning which are suitable for the data to          produce best results. 
+    2. As the shape of data is huge, we can rely on the predicted output.  
+    3. In this data as there are a greater number of attributes, I can use feature engineering 
+       techniques to remove unwanted attributes.
+
+q6. The data that I have opted is supervised data.
+
+q7. The output for this problem will be in the form of “Yes” or “No”.
+
+q8. My data science plan is 
+    1. Understand the problem 
+    2. Get the data, Explore and clean your data 
+    3. Enrich your dataset to Build helpful visualizations 
+    4. Predict the Output 
+
+
+# Update 2
+
+q1. Predicting an individual income makes $50k based on variables like "Income", "Capital.gain", "Capital.loss".
+
+q2. I Have loaded the "Census Income" Data set in R Studio server. Started working on the project.
+
+q3. Variable discussion:
+    
+     1.Age 
+    Data Type: Integer;
+    Mean: 38.58;
+    Max/Min value: 90 years/17 years;
+    
+    2.Workclass 
+    DataType: Factor with 8 levels;
+  
+    3.Education
+    DataType: Factor with 16 levels;
+    
+    4.Marital Status
+    DataType: Factor with 7 levels
+    
+    5.Occupation 
+    DataType: Factor with 14 levels;
+    
+    6.Relationship 
+    DataType: Factor with 6 levels;
+    
+    7.Race 
+    DataType: Factor with 5 levels;
+    
+    8.Sex 
+    DataType: Factor with 2 levels;
+    
+    9.Capital.gain 
+    DataType: Integer;
+    Max/Min value: 99999/0;
+    
+    10.Capital.loss
+    DataType: Integer;
+    Max/Min value: 4356/0;
+    
+    11.Hours.per.week 
+    DataType: Integer;
+    Mean: 40.44
+    Max/Min value: 99/1;
+    
+    12.Native.Country
+    DataType: Factor with 41 levels;
+    
+    13.Income
+    DataType: Factor with 2 levels;
+    
+q4. Data Plan
+
+Data Cleaning
+
+--> Understanding the purpose of columns in the csv file.
+
+--> Identify the columns which are correlated.
+
+--> Drop the unwanted columns of data which do not contribute in the prediction.
+
+--> Removing redundant and way to replace null values from the columns.
+
+--> Convert any special or unwanted characters into numerical or meaningful data.
+
+--> Convert the columns into appropriate Datatype.
+
+pre-processing
+
+--> Visualizing the data so understand the patterns.
+
+--> Splitting data into training data and test data.
+
+--> Standardizing the numerical columns to scale the data.
+
+--> Dummifying the categorical columns.
+
+Model Building
+
+--> Building the classification models like Logistic Regression, Decision Tree, Randon Forest.
+
+--> Based on error metrics, can understand the model accuracy. 
+
+q5. Preliminary EDA.
+
+1. The dimensions of the data are 32561 rows and 15 columns in the data set.
+
+2. In this data set the target column is "Income".
+
+Tasks Done:
+
+a. Replaced "?" values with na's.
+
+b. Identified the Null Values(There are 1836 na's in workclass column and 583 in native.country column).
+
+c. Understood the patterns of the columns using data visualizations.
+
+d. There are outliers in few numeric columns like "Capital.gain", "Capital.loss" and "Hours per week".
+
+e. There is data imbalance in few categorical columns like "Workclass", "Education", "Marital Status", Relationship", "Race", "Native.country".
+
+f. There is class imbalance between two categories in target variable.
+
+
+# Update 3
+
+q1. The question right now is to understand how the data is and how one variable is correlated to the target variable.
+
+q2. Yeah it makes sense because for model building which variables are required and what are the different things that i can make the data better to obtain good accuracy. 
+
+q3. Yes, with the help of the dataset i have choosen it will be possible for me to answer almost all types of data science questions.
+
+q4. We are using all the columns excluding 'fnlwgt' and 'education'. because they are not that correlated to the target variable. 
+
+q5. The response variables are 'age', 'education-num', 'capital-gain', 'capital-loss',        'hours-per-week' and the predictor variable is 'income'.
+
+EDA
+
+a. Understood the patterns of the columns using data visualizations.
+
+b. There are outliers in few numeric columns like "Capital.gain", "Capital.loss" and "Hours per week".
+
+c. There is data imbalance in few categorical columns like "Workclass", "Education", "Marital Status", Relationship", "Race", "Native.country".
+
+d. There is class imbalance between two categories in target variable.
+
+e. None of the numerical attributes have missing values.
+
+f. The column education is just a string representation of the column education-num. We will drop the education column.
+
+g. The variables workClass, occupation, native-country have missing values. We will replace the missing values in each column with the most_frequent occurring value of that column.
+
+h. Numerical attributes need to be scaled, whereas for categorical columns we need to fill the missing values and then encode the categorical values into numerical values.
+
+Model Building
+
+Logistic Regression
+
+A logistic regression using income as the response variable, and all other 9 variables as predictors to build a model that predicts the income level of an adult to be greater than $50K or less than $50K using Census data. We have selected these predictor variables based on the correlation matrix table. The output is as below:
+
+From the output we find that 'age', education.num', 'hours.per.week', 'occupation' relationship are some top attributes that relevant to the income level.
+
+Most of the explanatory variables are essential in explaining incomes. Only some of them are less important due to the smaller amount of observations, such as work class 'without-pay', some marital status, and some occupations such as 'armed-forces' or 'craft-repair'.
+
+
+# Update 4
+
+I have done the correlations for each variable with target variable after last project update. I have done correlations for few variables like age and education in the previous update. 
+
+Now I have calculated the correlation for marital status.
+
+```{r}
+  df$marital.status <- factor(df$marital.status, levels = names(sort(table(df$marital.status),  decreasing = TRUE)))
+lp_marital <- lapply(levels(df$marital.status), function(v){ ggplot(data = subset(df, df$marital.status == v),aes(x = subset(df, df$marital.status == v)$income, fill = subset(df, df$marital.status == v)$income)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent((..count..)/sum(..count..)), y = (..count..)/sum(..count..) ), stat = "count", vjust = c(2, -0.1)) + labs(x = "Income", y = "", fill = "Income") + ggtitle(v) + theme(legend.position = 'none', plot.title = element_text(size = 11, face = "bold")) + scale_y_continuous(labels = percent) })
+grid.arrange(grobs = lp_marital[1:3], ncol = 2)
+grid.arrange(grobs = lp_marital[4:7], ncol = 2)
+```
+
+
+Therefore these results provide evidence that there is a correlation between "income" and "marital status".
+
+The next I have choosed the variable "hours.per.week", But this variable is not that correlated to the "income" variable. So i am not including the plot of that variable.
+
+```{r}
+df$native.country <- factor(df$native.country, 
+                                 levels = 
+                                     names(sort(table(df$native.country),                                                 decreasing = TRUE)))
+lp_region <- lapply(levels(df$native.country), function(v){ df <- subset(df, df$native.country == v) 
+ggplot(data = df, aes(x = income, fill = income)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent((..count..)/sum(..count..)), y = (..count..)/sum(..count..) ), stat = "count", vjust = c(2, -0.1), size = 4) + labs(x = "Income", y = "", fill = "Income") + ggtitle(v) + theme(legend.position = 'none', plot.title = element_text(size = 11, face = "bold")) + scale_y_continuous(labels = percent) })
+grid.arrange(grobs = lp_region[1:4], ncol = 2) 
+grid.arrange(grobs = lp_region[5:8], ncol = 2)
+```
+
+I have taken the variable "native_region", In this 91.2% of the participants in the study come from the USA. This means that we have a small number of people from each of the other native regions (especially for East Europe - only 85 people, South America -113 people and Central Asia - 142 people) leading to random samples which might not be representative for the respective population.
+
+If we disregard the small number of observations for the non-US native regions, the later results indicate that “income” is dependent on “native_region”. But by seeing the graphs of each region with income variable, there exists the correlation.
+
+Next i have Taken the variable "workclass" variable. 
+
+These results demonstrate that there is a relationship between the variables “income” and “workclass”.
+I have included this plot because this variable is important for model building.
+
+After doing this now i need to perform correlation with few more variables and i should build models. Till now i have done this.
+
+
+
+# Update 5
+
+1. The visualization that I have made are as below
+
+A. This plot is about the value counts of the target variable(Income).
+```{r}
+plt <- ggplot(data = df, mapping = aes(x = income, fill = income)) + geom_bar(mapping = aes(y = (..count..)/sum(..count..))) + geom_text(mapping = aes(label = scales::percent((..count..)/sum(..count..)), y = (..count..)/sum(..count..) ), stat = "count", vjust = -.1) + labs(x = "Income", y = "", fill = "Income") + scale_y_continuous(labels = percent)
+
+plt
+```
+
+The graph explains that 76% of the people are earns less that 50k and 24% earns greater than 50k. By this graph, we can say that there is imbalance distribution in the target variable.
+
+
+B. This plot is about the pattern relationship between "age" and "income".
+```{r}
+plt2 <- ggplot(data = df, aes(age, fill = income)) + geom_density(alpha = 0.2) + scale_x_continuous(breaks = seq(0, 95, 5))
+
+plt2
+```
+
+The graph explains that the people who are in between the ages 35-50 earns more than 50k. The people from ages 15-30, 55-80 earns less than 50k.
+
+C. This plot is about the pattern relationship between "education" and "income".
+```{r}
+df$education <- factor(df$education, levels = names(sort(table(df$education), decreasing =TRUE)))
+modified.edu <- levels(df$education)
+modified.edu <- modified.edu[!is.element(modified.edu, "Preschool")]
+lg.mod.edu <- lapply(modified.edu, function(v){ ggplot(data = subset(df, df$education == v), aes(x = subset(df, df$education == v)$income, fill = subset(df, df$education == v)$income)) + geom_bar(aes(y = (..count..)/sum(..count..))) + geom_text(aes(label = scales::percent((..count..)/sum(..count..)), y = (..count..)/sum(..count..) ), stat = "count", vjust =  c(2, 0.5), size = 3) + labs(x = "Income", y = "", fill = "Income") + ggtitle(v) +   theme(legend.position = 'none', plot.title = element_text(size = 11, face = "bold")) +    
+scale_y_continuous(labels = percent) })
+grid.arrange(grobs = lg.mod.edu[1:4], ncol = 2)
+grid.arrange(grobs = lg.mod.edu[5:8], ncol = 2)
+```
+
+Since there is a lot of variable imbalance, there is a need to do feature engineering for this variable. Like combining few categories that are similar and update them to 4 categories i.e., pre-bachelors, bachelors, masters, post-masters.
+
+
+ In this project we analyze a U.S. census data. The prediction task is to determine whether a person makes over 50K a year. The project is divided into four parts. The first part of the project is Cleaning and Pre processing the Data. The second part is Predictive Analysis and the third part is Theoretical Background. Final part is to build a classification model, which can predict whether the income of a random adult is less or greater than 50k a year based on given features, such as age, education, occupation, gender, race, etc. 
+
+I have selected the variables after performing dimentionality reduction techniques and the variables I'm using for model building are Age, Education, Education.Num, Hours.Per.Week, Occupation, Marital Status and Relationship.
+
+For this problem statement I would like to build a basic logistic Regression model. As is it a basic classification algorithm to predict the outcome. Here we need to predict whether the person makes greater than 50k or not.
+
+I have first applied Logistic regression model and the confusion matrix shows 10120 true positives, 1470 false positives, 864 false negatives and 2128 true negatives. The accuracy obtained by Logistic Regression model is 83.99%. Recall is 96%. The f1-score is 88%.
+
+After that I have applied Random Forest model and the confusion matrix shows 10203 true positives, 1333 false positives, 781 false negatives and 2265 true negatives. The accuracy obtained by Random Forest model is 85.5%. 
+
+After that I have applied Neural Network model and the confusion matrix shows 10184 true positives, 1354 false positives, 800 false negatives and 2244 true negatives. The accuracy obtained by Neural Network model is 85.23%.
+
+I have applied Naive Bayes, the confusion matrix shows 10368 true positives, 616 false positives, 1912 false negatives and 1686 true negatives. The accuracy obtained by Naive Bayes model is 82.66%.
+
+I have applied SVM, the confusion matrix shows 10273 true positives, 711 false positives, 1483 false negatives and 2115 true negatives. The accuracy obtained by SVM model is 84.95%.
+
+
+
+# Excuetive Summary
+  
+* Summarize the key (This could be a bulleted list)
+  + information about your data set
+  + major data cleaning
+  + findings from EDA
+  + Model output
+  + Overall conclusions
+
+# Abstract
+
+* Summary of the nature, finding and meaning of your data analysis project. 
+* 1 paragraph written summary of your data analysis project
+   
+# Introduction
+
+* Background and motivation of the Data Science question. The ``Why'' of the research
+* Explanation of your data
+  + Where is your data from
+  + What are the variables
+* What data would be necessary to improve your analysis?
+   
+# Data Science Methods
+
+* To be applied (such as image processing, time-series analysis, spectral analysis etc
+* Define critical capabilities and identify packages you will draw upon
+
+# Exploratory Data Analysis
+
+## Explanation of your data set
+
+* How many variables?
+* What are the data classes?
+* How many levels of factors for factor variables?
+* Is your data suitable for a project analysis?
+* Write you databook, defining variables, units and structures
+
+## Data Cleaning
+
+* What you had to do to clean your data
+
+## Data Vizualizations
+
+* Vizualizations of your data
+
+## Variable Correlations
+
+* Pairwise correlation plots, etc.
+  
+# Statistical Learning: Modeling \& Prediction
+
+* DSCI 451 will accomplish at least 1 simple linear model (or simple logistic model)
+* DSCI 352/352M/452 requires the appropriate modeling for your data set including machine learning
+
+* Types of modeling to try
+* Statistical prediction/modeling
+* Model selection
+* Cross-validation, Predictive R2
+* Interpret results
+* Challenge results
+   
+# Discussion
+
+* Discussion of the answers to the data science questions framed in the introduction
+  
+# Conclusions
+   
+# Acknowledgments
+   
+# References
+
+* Include a bib file in the markdown report
+* Or hand written citations.
+
